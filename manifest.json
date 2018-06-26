@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+
+  "name": "eXpose",
+  "author": "roboticsound",
+  "description": "Publish WebExtensions with one click.",
+  "version": "0.1",
+
+  "content_scripts": [
+      {
+      "matches": ["https://github.com/*"],
+      "js": ["lib/js/jquery-3.3.1.min.js", "button.js"],
+      "run_at": "document_end"
+      }
+  ],
+
+  "options_ui": {
+    "page": "/opt/options.html",
+    "chrome_style": false
+  },
+
+  "content_security_policy": "script-src 'self'; object-src 'self' ",
+
+  "permissions": [
+    "activeTab",
+    "webNavigation",
+    "https://ajax.googleapis.com/"
+  ]
+}

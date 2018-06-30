@@ -6,10 +6,13 @@ var t = document.createTextNode("Publish WebExtension!");
 button.className += "btn btn-sm BtnGroup-item tooltipped tooltipped-n";
 
 button.appendChild(t);
-// list[0].appendChild(button);
 list[0].insertBefore(button, list.firstChild);
 
-
 $("#btn-publish").on('click', () => {
+    // download file
+    // let param = "https://github.com/roboticsound/Pulsarr/archive/master.zip"
+    // chrome.runtime.sendMessage(param);
+
+    chrome.runtime.sendMessage("getToken");
     alert("Published!")
 });

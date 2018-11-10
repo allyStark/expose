@@ -14,5 +14,4 @@ $("#btn-publish").on('click', () => {
     // chrome.runtime.sendMessage(param);
 
     chrome.runtime.sendMessage("getToken");
-    alert("Published!")
 });

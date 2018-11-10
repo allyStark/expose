@@ -1,9 +1,7 @@
 chrome.runtime.onMessage.addListener(
-  function(arg, sender, sendResponse) {
+  async function(arg, sender, sendResponse) {
     if (arg === "getToken") {
-        chrome.identity.getAuthToken({interactive: true}, function(token) {
-            alert(token);
-          });
+        alert(await getAuth());
     } else {
         chrome.downloads.download({
         url: arg,
@@ -15,3 +13,15 @@ chrome.runtime.onMessage.addListener(
 
   function sendResponse(){
   }
+
+let getAuth = async () => {
+  return new Promise(function(resolve, reject) {
+      try {
+          chrome.identity.getAuthToken({interactive: true}, async (token) => {
+              resolve(token);
+            });
+      } catch {
+          reject("Error in getAuth()")
+      }
+  })
+}

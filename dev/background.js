@@ -1,14 +1,15 @@
-import example from './background/example';
 import reload from './development/reload';
 
 reload();
 
-example();
-
 chrome.runtime.onMessage.addListener(
-    async function(arg, sender, sendResponse) {
-        if (arg === 'getToken') {
-            alert(await getAuth());
+    (arg, sender, sendResponse) => {
+        if (arg.action === 'getToken') {
+            getAuth().then(() => {
+                const token = getToken();
+                const res = { token };
+                sendResponse(res);
+            }).catch(err => console.log(new Error(err)));
         } else {
             chrome.downloads.download({
                 url: arg,
@@ -16,20 +17,27 @@ chrome.runtime.onMessage.addListener(
                 saveAs: false
             });
         }
+        return true;
     }
 );
 
-function sendResponse(){
+async function getAuth () {
+    try {
+        return await chrome.identity.getAuthToken({interactive: true}, token => {
+            if (token) setToken(String(token));
+            return;
+        });
+    } catch (err) {
+        throw new Error(err);
+    }
 }
 
-let getAuth = async () => {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.identity.getAuthToken({interactive: true}, async (token) => {
-                resolve(token);
-            });
-        } catch (err) {
-            reject(new Error(err));
-        }
-    });
-};
+function setToken(token) {
+    const key = 'token';
+    const value = token;
+    return localStorage.setItem([key], value); 
+}
+
+function getToken() {
+    return localStorage.getItem(['token']);
+}

@@ -1,6 +1,7 @@
 import sass from './scss/example.scss';
 import $ from 'jquery';
 import { getZipballUrl, handleFiles } from './content/getUrl';
+import { publishToStore } from './content/publish';
 
 const list = document.getElementsByClassName('file-navigation in-mid-page d-flex flex-items-start');
 
@@ -28,7 +29,7 @@ async function createRequest(token) {
     const zipballUrl = await getZipballUrl();
     if (zipballUrl) {
         const zipballToUpload = await handleFiles(zipballUrl);
-        console.log('returned zipball is ', zipballToUpload);
+        const attemptToPublish = await publishToStore(token, zipballToUpload.data);
     } else {
         alert('You must have a release to publish');
     }

@@ -18,7 +18,7 @@
   "author": "Jesus",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "jquery": "^3.3.1"
   },
   "devDependencies": {
